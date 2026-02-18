@@ -3,7 +3,7 @@ const router = express.Router();
 const { protect } = require("../middleware/authMiddleware");
 
 // Import User model - handled at the controller level
-const User = require("../models/user");
+const User = require("../models/User");
 
 // Get users by role (admin only) - query param: ?role=CLIENT
 router.get("/", protect, async (req, res) => {
