@@ -12,7 +12,7 @@ const fs = require('fs');
 const path = require('path');
 
 const API = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: 'https://contracthub-api.onrender.com',
   validateStatus: () => true // Don't throw on any status
 });
 

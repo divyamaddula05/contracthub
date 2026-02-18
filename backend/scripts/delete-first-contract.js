@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-const API = 'http://localhost:5000/api';
+const API = 'https://contracthub-api.onrender.com';
 
 async function run(){
   // Login as admin

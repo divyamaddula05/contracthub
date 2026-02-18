@@ -5,7 +5,7 @@ import { chromium } from 'playwright';
   const page = await browser.newPage();
   try {
     // Obtain client token via backend API and seed into localStorage before loading the app
-    const loginResp = await (await fetch('http://localhost:5000/api/auth/login', {
+    const loginResp = await (await fetch('https://contracthub-api.onrender.com/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: 'client@test.com', password: 'password123' }),
@@ -16,7 +16,7 @@ import { chromium } from 'playwright';
       localStorage.setItem('token', token);
     }, loginResp.token);
 
-    await page.goto('http://localhost:5175/', { waitUntil: 'networkidle' });
+    await page.goto('https://contracthub-api.onrender.com/', { waitUntil: 'networkidle' });
 
     // Wait for the app to render and check for Download or Version entries
     await page.waitForTimeout(1200);
@@ -27,7 +27,7 @@ import { chromium } from 'playwright';
     console.log('View button present for CLIENT (expected true):', !!viewBtn);
 
     // Now test admin: obtain admin token and reload app with admin session
-    const adminLoginResp = await (await fetch('http://localhost:5000/api/auth/login', {
+    const adminLoginResp = await (await fetch('https://contracthub-api.onrender.com/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: 'admin@test.com', password: 'password123' }),
@@ -37,11 +37,11 @@ import { chromium } from 'playwright';
     // Open a fresh page for admin and seed the admin token before navigation
     const adminPage = await browser.newPage();
     await adminPage.addInitScript((token) => { localStorage.setItem('token', token); }, adminLoginResp.token);
-    await adminPage.goto('http://localhost:5175/', { waitUntil: 'networkidle' });
+    await adminPage.goto('https://contracthub-api.onrender.com/', { waitUntil: 'networkidle' });
     await adminPage.waitForTimeout(1200);
 
     const meResp = await adminPage.evaluate(async () => {
-      const res = await fetch('http://localhost:5000/api/auth/me', { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } });
+      const res = await fetch('https://contracthub-api.onrender.com/api/auth/me', { headers: { Authorization: 'Bearer ' + localStorage.getItem('token') } });
       try { return await res.json(); } catch (e) { return { error: e.toString() }; }
     });
     console.log('Auth me for admin page:', meResp);
