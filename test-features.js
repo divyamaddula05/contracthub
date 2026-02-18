@@ -9,7 +9,7 @@
 const axios = require('axios');
 
 const API = axios.create({
-  baseURL: 'https://contracthub-api.onrender.com',
+  baseURL: 'https://contracthub-api.onrender.com/api',
   validateStatus: () => true // Don't throw on any status
 });
 

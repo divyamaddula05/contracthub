@@ -1,5 +1,5 @@
 import { useState } from "react";
-import api from "../api/api";
+import api from "../api/api";   // uses the axios instance we fixed
 
 export default function Login({ role, setUser, goBack }) {
   const [email, setEmail] = useState("");
@@ -15,18 +15,19 @@ export default function Login({ role, setUser, goBack }) {
     try {
       setLoading(true);
 
+      // 🔐 Login request
       const res = await api.post("/auth/login", {
         email,
         password,
       });
 
-      // Save JWT token
+      // Save token
       localStorage.setItem("token", res.data.token);
 
-      // Fetch logged-in user
+      // Get logged-in user info
       const me = await api.get("/auth/me");
 
-      // Safety check: role mismatch
+      // Check if user logged into correct role (ADMIN / CLIENT)
       if (me.data.role !== role) {
         alert(`You are not authorized to login as ${role}`);
         localStorage.removeItem("token");
@@ -34,10 +35,12 @@ export default function Login({ role, setUser, goBack }) {
         return;
       }
 
+      // Set logged-in user in app state
       setUser(me.data);
+
     } catch (err) {
+      console.error("Login error:", err);
       alert("Invalid credentials");
-      console.error(err);
     } finally {
       setLoading(false);
     }
