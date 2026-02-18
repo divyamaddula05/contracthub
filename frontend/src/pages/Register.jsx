@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import API from "../api";   // <-- use the API we created
+import api from "../api/api";   // correct import
 
 function Register() {
   const [form, setForm] = useState({
@@ -16,21 +16,41 @@ function Register() {
     e.preventDefault();
 
     try {
-      const res = await API.post("/auth/register", form);
+      // call backend correctly
+      const res = await api.post("/auth/register", form);
 
       alert("Registration successful! Please login.");
       console.log(res.data);
     } catch (err) {
-      console.error(err);
+      console.error("REGISTER ERROR:", err.response?.data || err.message);
       alert("Registration failed");
     }
   };
 
   return (
     <form onSubmit={handleSubmit}>
-      <input name="name" placeholder="Name" onChange={handleChange} required />
-      <input name="email" placeholder="Email" onChange={handleChange} required />
-      <input name="password" type="password" placeholder="Password" onChange={handleChange} required />
+      <input
+        name="name"
+        placeholder="Name"
+        onChange={handleChange}
+        required
+      />
+
+      <input
+        name="email"
+        placeholder="Email"
+        onChange={handleChange}
+        required
+      />
+
+      <input
+        name="password"
+        type="password"
+        placeholder="Password"
+        onChange={handleChange}
+        required
+      />
+
       <button type="submit">Register</button>
     </form>
   );
