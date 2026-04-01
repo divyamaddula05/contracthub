@@ -30,8 +30,9 @@ export default function Register({ goBack }) {
       alert("Registration successful! Please login.");
       goBack(); // go back to login page
     } catch (err) {
+      const errorMessage = err.response?.data?.message || err.message || "Registration failed";
       console.error("REGISTER ERROR:", err.response?.data || err.message);
-      alert("Registration failed");
+      alert(errorMessage);
     } finally {
       setLoading(false);
     }

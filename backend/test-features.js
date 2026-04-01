@@ -12,7 +12,7 @@ const fs = require('fs');
 const path = require('path');
 
 const API = axios.create({
-  baseURL: 'https://contracthub-api.onrender.com',
+  baseURL: process.env.API_URL || 'https://contracthub-zwiu.onrender.com',
   validateStatus: () => true // Don't throw on any status
 });
 

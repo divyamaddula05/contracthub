@@ -2,7 +2,7 @@ import axios from "axios";
 
 // This MUST point to your Render backend
 const API = axios.create({
-  baseURL: "https://contracthub-api.onrender.com/api",
+  baseURL: import.meta.env.VITE_API_URL || "https://contracthub-zwiu.onrender.com/api",
   headers: {
     "Content-Type": "application/json",
   },

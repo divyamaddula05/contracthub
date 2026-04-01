@@ -39,8 +39,9 @@ export default function Login({ role, setUser, goBack }) {
       setUser(me.data);
 
     } catch (err) {
-      console.error("Login error:", err);
-      alert("Invalid credentials");
+      const errorMessage = err.response?.data?.message || err.message || "Invalid credentials";
+      console.error("Login error:", err.response?.data || err.message || err);
+      alert(errorMessage);
     } finally {
       setLoading(false);
     }

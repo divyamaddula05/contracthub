@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-const API = 'https://contracthub-api.onrender.com';
+const API = process.env.API_URL || 'https://contracthub-zwiu.onrender.com';
 
 async function run(){
   // Login as admin
