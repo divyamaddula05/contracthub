@@ -1,20 +1,42 @@
 import axios from "axios";
 
-// This MUST point to your Render backend
+// Base URL from environment (MUST be defined in .env)
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "https://contracthub-zwiu.onrender.com/api",
+  baseURL: import.meta.env.VITE_API_URL,
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: false, // set true only if using cookies
 });
 
-// Attach token automatically if present
-API.interceptors.request.use((config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+// Attach token automatically to every request
+API.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+// Optional: handle global response errors
+API.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Example: handle unauthorized (token expired)
+    if (error.response && error.response.status === 401) {
+      console.error("Unauthorized - redirect to login");
+      // optional: logout logic
+      // localStorage.removeItem("token");
+      // window.location.href = "/login";
+    }
+
+    return Promise.reject(error);
   }
-  return config;
-});
+);
 
 export default API;
